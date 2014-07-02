@@ -1,12 +1,70 @@
 shinyMethyl
 ===========
 
-Welcome to the shinyMethyl, an interactive R application based on the shiny package for exploration of DNA methylation data.
+Authors: [Jean-Philippe Fortin](mailto:zerbino@ebi.ac.uk) and [Kasper Daniel Hansen](mailto:khansen@jhsph.edu)
 
-Online demo: http://spark.rstudio.com/jfortin/shinyMethyl/
+Welcome to shinyMethyl, an interactive R application based on the shiny package for exploration of DNA methylation data from Illumina 450K arrays. Please find an online demo of shinyMethyl [here](http://spark.rstudio.com/jfortin/shinyMethyl/)
 
-Some updates: 
+Installation
+------------
+First, you will need to install at least the following packages from Bioconductor
 
+```{r}
+source("http://bioconductor.org/biocLite.R")
+biocLite("minfi")
+biocLite("minfiData")
+```
+and from CRAN
+```{r}
+install.packages("devtools")
+install.packages("matrixStats")
+install.packages("RColorBrewer")
+```
+To install the development version of shinyMethyl:
+```{r}
+library(devtools)
+install_github("shiny", "rstudio")
+install_github("shinyMethyl", "jfortin1", quick=TRUE)
+install_github("shinyMethylData", "jfortin1")
+```
+
+Vignette
+------------
+You can find the vignette for shinyMethyl at [https://github.com/Jfortin1/shinyMethyl/blob/master/vignettes/shinyMethyl.pdf](https://github.com/Jfortin1/shinyMethyl/blob/master/vignettes/shinyMethyl.pdf)
+
+Quick example
+------------
+After installation, you can launch shinyMethyl with an example dataset from TCGA with the following code:
+```{r}
+library(shinyMethyl)
+library(shinyMethylData)
+runShinyMethyl(tcga.summary.raw, tcga.summary.norm)
+```
+
+# Citation
+
+
+To cite package __shinyMethyl__ in publications use:
+
+Jean-Philippe Fortin and Kasper Daniel Hansen (2014). shinyMethyl: 
+Interactive visualization of 450k methylation data. R package 
+https://github.com/Jfortin1/shinyMethyl
+
+A BibTeX entry for LaTeX users is
+
+@Manual{,
+    title = {shinyMethyl: 
+Interactive visualization of 450k methylation data},
+    author = {Jean-Philippe Fortin and Kasper Daniel Hansen},
+    year = {2014},
+    note = {R package version},
+    url = {https://github.com/Jfortin1/shinyMethyl},
+}
+
+Updates
+------------
+
+- The package is now build using S4 classes; the current functions of shinyMethyl are no longer in used. The function shinySummarize() applied to a RGChannelSet object is now used to produce a shinyMethylSet, which is passed to runShinyMethyl() to launch a shinyMethyl session. Please see the vignette.
 - Fixed returnPCScores() dependency on annotation package. Thanks to Maarten van Iterson 
 - extractFromTargets450k() is temporarily non-available. Please use extractFromRGSet450k() instead. 
 - Bug fixed: M-value densities are now visible
