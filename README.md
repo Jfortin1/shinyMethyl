@@ -16,6 +16,7 @@ biocLite("minfiData")
 ```
 and from CRAN
 ```{r}
+install.packages("httpuv")
 install.packages("devtools")
 install.packages("matrixStats")
 install.packages("RColorBrewer")
