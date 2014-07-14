@@ -8,7 +8,7 @@ Depends: methods, BiocGenerics (>= 0.3.2), shiny (>= 0.9.1), minfi (>= 1.6.0),
         IlluminaHumanMethylation450kmanifest, matrixStats,
         R (>= 3.0.0)
 Imports: RColorBrewer
-Suggests: shinyMethylData, minfiData, BiocStyle, RUnit, digest
+Suggests: shinyMethylData, minfiData, BiocStyle, RUnit, digest, knitr
 Description: Interactive tool for visualizing Illumina's 450k array data
 Url: https://github.com/Jfortin1/shinyMethyl
 VignetteBuilder: knitr
