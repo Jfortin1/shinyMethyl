@@ -1,6 +1,6 @@
 Package: shinyMethyl
 Title: Interactive visualization for Illumina's 450k methylation arrays
-Version: 0.99.1
+Version: 0.99.3
 Authors@R: c(person("Jean-Philippe", "Fortin", role = c("cre", "aut"),
                     email = "jfortin@jhsph.edu"),
              person(c("Kasper", "Daniel"), "Hansen", role = "aut"))
