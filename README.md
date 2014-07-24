@@ -5,6 +5,8 @@ Authors: [Jean-Philippe Fortin](mailto:zerbino@ebi.ac.uk) and [Kasper Daniel Han
 
 Welcome to shinyMethyl, an interactive R application based on the shiny package for exploration of DNA methylation data from Illumina 450K arrays. Please find an online demo of shinyMethyl [here](http://spark.rstudio.com/jfortin/shinyMethyl/)
 
+shinyMethyl is now part of the Bioconductor project [here](http://www.bioconductor.org/packages/devel/bioc/html/shinyMethyl.html)
+
 Installation
 ------------
 First, you will need to install at least the following packages from Bioconductor
