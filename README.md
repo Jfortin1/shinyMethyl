@@ -49,7 +49,7 @@ runShinyMethyl(tcga.summary.raw, tcga.summary.norm)
 # Citation
 
 
-To cite package __shinyMethyl__ in publications use:
+To cite package __shinyMethyl__ in publications, use:
 
 Jean-Philippe Fortin and Kasper Daniel Hansen (2014). shinyMethyl: 
 Interactive visualization of 450k methylation data. R package 
