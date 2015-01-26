@@ -1,11 +1,20 @@
-bibentry("Manual",
-         title = "{shinyMethyl: interactive visualization of Illumina 450K methylation arrays}",
-         author = c(person(c("Jean-Philippe"), "Fortin"),
-                    person(c("Kasper", "D."), "Hansen")
-         ),
-         year = 2014,
-         textVersion = 
-         paste("JP Fortin, KD Hansen.", 
-               "shinyMethyl: interactive visualization of Illumina 450K methylation arrays.", "2014", "R package"),
-         mheader = "To cite shinyMethyl in publications use:"
-         )
+bibentry(bibtype = "Article",
+           key = "shinymethyl",
+           author = c(person(given = "Jean-Philippe", family = "Fortin"),
+                    person(given = c("Elana", "J."), family = "Fertig"),
+                    person(given = c("Kasper", "D."), family = "Hansen")),
+           title = "{shinyMethyl: interactive quality control of Illumina 450k DNA methylation arrays in R}",
+           journal = "F1000Research",
+           year = "2014",
+           volume = "3",
+           pages = "175",
+           doi = "10.12688/f1000research.4680.2",
+           pubmed = "25285208",
+           header = "To cite shinyMethyl in publications use:")
+ 
+ 
+
+	
+
+
+
