@@ -64,7 +64,7 @@ A BibTeX entry for LaTeX users is
     volume = {3},
     pages = {175},
     doi = {10.12688/f1000research.4680.2},
-    pubmed = {25285208},
+    pubmed = {25285208}
   }
 
 Updates
