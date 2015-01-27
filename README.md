@@ -51,20 +51,21 @@ runShinyMethyl(tcga.summary.raw, tcga.summary.norm)
 
 To cite package __shinyMethyl__ in publications use:
 
-Jean-Philippe Fortin and Kasper Daniel Hansen (2014). shinyMethyl: 
-Interactive visualization of 450k methylation data. R package 
-https://github.com/Jfortin1/shinyMethyl
+Fortin J, Fertig EJ and Hansen KD (2014). “shinyMethyl: interactive
+quality control of Illumina 450k DNA methylation arrays in R.”, F1000Research
 
 A BibTeX entry for LaTeX users is
 
-@Manual{,
-    title = {shinyMethyl: 
-Interactive visualization of 450k methylation data},
-    author = {Jean-Philippe Fortin and Kasper Daniel Hansen},
+ @Article{shinymethyl,
+    author = {Jean-Philippe Fortin and Elana J. Fertig and Kasper D. Hansen},
+    title = {{shinyMethyl: interactive quality control of Illumina 450k DNA methylation arrays in R}},
+    journal = {F1000Research},
     year = {2014},
-    note = {R package version},
-    url = {https://github.com/Jfortin1/shinyMethyl},
-}
+    volume = {3},
+    pages = {175},
+    doi = {10.12688/f1000research.4680.2},
+    pubmed = {25285208},
+  }
 
 Updates
 ------------
