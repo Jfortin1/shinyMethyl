@@ -1,3 +1,4 @@
+sudo: required
 language: r
 bioc_required: true
-sudo: required
+
