@@ -1,7 +1,7 @@
 shinyMethyl
 ===========
 
-[![Build Status](https://travis-ci.org/jfortin1/shinyMethyl.svg?branch=master)](https://travis-ci.org/jfortin1/shinyMethyl)
+[![Build Status](https://travis-ci.org/Jfortin1/shinyMethyl.svg?branch=master)](https://travis-ci.org/Jfortin1/shinyMethyl)
 
 Authors: [Jean-Philippe Fortin](mailto:zerbino@ebi.ac.uk) and [Kasper Daniel Hansen](mailto:khansen@jhsph.edu)
 
