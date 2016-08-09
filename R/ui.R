@@ -109,15 +109,15 @@ ui.shinyMethyl <- function(shinyMethylSet1, shinyMethylSet2=NULL){
                          HTML('<table border=0 width="100%"><tr bgcolor="#f5f5f5"><td>'),
                          div(style="width:100%;max-width:600px;",
                              ## Internal controls:
-                             plotOutput("internalControls", clickId = "controlsHover")), 
+                             plotOutput("internalControls", click = "controlsHover")), 
                          HTML('</td><td>'),
                          ## Fast quality control plot:
-                         plotOutput("medianChannels", clickId = "qualityHover"),
+                         plotOutput("medianChannels", click = "qualityHover"),
                          HTML('</td></tr></table>'),
-                         plotOutput("rawDensities",clickId = "densitiesHover"),
+                         plotOutput("rawDensities",click = "densitiesHover"),
                          conditionalPanel(condition= "!is.null(shinyMethylSet2)",
                                           plotOutput("normDensities",
-                                                     clickId = "normHover")),
+                                                     click = "normHover")),
                          verbatimTextOutput(outputId = "cumulativeListPrint"),
                          downloadLink("selectedSamples","selectedSamples.csv")
                          ),
@@ -143,7 +143,7 @@ ui.shinyMethyl <- function(shinyMethylSet1, shinyMethylSet2=NULL){
   		By comparing the median total intensity of the Y-chromosome-mapped probes to the median total intensity of the X-chromosome-mapped probes, where the total intensity is the sum of the methylated and unmethylated signals, it is possible to predict the gender of the sample by looking at the two distinct clusters of intensities. See the minfi function <span style=\"font-style:italic\">getSex()</span>.  		</span></p><br><br>") ,
                          HTML('<table border=0 width="100%"><tr bgcolor="#f5f5f5"><td>'),
                          div(style="width:100%;max-width:600px;",
-                             plotOutput("genderClustering", clickId = "genderCutoff")), 
+                             plotOutput("genderClustering", click = "genderCutoff")), 
                          HTML('</td><td>'),
                          plotOutput("densitiesGenderX"),
                          HTML('</td></tr></table>'),

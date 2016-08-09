@@ -48,7 +48,8 @@ shinyMethylSet(sampleNames = new("character"),
                greenControls = new(vector("list",12)),
                redControls = new(vector("list",12)),
                pca = new("list"),
-               originObject = new("character"))
+               originObject = new("character"),
+               array = new("character"))
 
 ## Data extraction / Accessors
 
@@ -81,6 +82,7 @@ shinyMethylSet(sampleNames = new("character"),
     CpGs and the percentages of variance explained} 
   \item{originObject}{Name of the minfi object from which the data were
     extracted} 
+  \item{array}{Name of the Illumina array platform: 450k or EPIC} 
 }
 
 \details{
