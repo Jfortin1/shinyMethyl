@@ -3,13 +3,12 @@ shinyMethyl
 
 [![Build Status](https://travis-ci.org/Jfortin1/shinyMethyl.svg?branch=master)](https://travis-ci.org/Jfortin1/shinyMethyl)
 
-Authors: [Jean-Philippe Fortin](mailto:zerbino@ebi.ac.uk) and [Kasper Daniel Hansen](mailto:khansen@jhsph.edu)
+Authors: [Jean-Philippe Fortin](mailto:fortin946@gmail.com) and [Kasper Daniel Hansen](mailto:khansen@jhsph.edu)
 
-Welcome to shinyMethyl, an interactive R application based on the shiny package for exploration of DNA methylation data from Illumina 450K arrays. Please find an online demo of shinyMethyl [here](http://spark.rstudio.com/jfortin/shinyMethyl/)
+Welcome to `shinyMethyl`, an interactive R application based on the `shiny` package for exploration of DNA methylation data from Illumina arrays (450k and EPIC arrays). `shinyMethyl` is part of the [Bioconductor project](http://www.bioconductor.org/packages/devel/bioc/html/shinyMethyl.html).
 
-The shinyMethyl paper is now out [here](http://f1000research.com/articles/3-175/v1)
+The `shinyMethyl` paper can be found [here](http://f1000research.com/articles/3-175/v2)
 
-shinyMethyl is now part of the [Bioconductor project](http://www.bioconductor.org/packages/devel/bioc/html/shinyMethyl.html)
 
 Installation
 ------------
@@ -30,22 +29,22 @@ install.packages("RColorBrewer")
 To install the development version of shinyMethyl:
 ```{r}
 library(devtools)
-install_github("shiny", "rstudio")
-install_github("shinyMethyl", "jfortin1")
-install_github("shinyMethylData", "jfortin1")
+install_github("rstudio/shiny")
+install_github("jfortin1/shinyMethyl")
+install_github("jfortin1/shinyMethylData")
 ```
 
 Vignette
 ------------
-You can find the vignette for shinyMethyl at [https://github.com/Jfortin1/shinyMethyl/blob/master/vignettes/shinyMethyl.pdf](https://github.com/Jfortin1/shinyMethyl/blob/master/vignettes/shinyMethyl.pdf)
+You can find the vignette for `shinyMethyl` at [https://github.com/Jfortin1/shinyMethyl/blob/master/vignettes/shinyMethyl.pdf](https://github.com/Jfortin1/shinyMethyl/blob/master/vignettes/shinyMethyl.pdf)
 
 Quick example
 ------------
-After installation, you can launch shinyMethyl with an example dataset from TCGA with the following code:
+After installation, you can launch `shinyMethyl` with an example dataset from TCGA with the following code:
 ```{r}
 library(shinyMethyl)
 library(shinyMethylData)
-runShinyMethyl(tcga.summary.raw, tcga.summary.norm)
+runShinyMethyl(summary.tcga.raw, summary.tcga.norm)
 ```
 
 # Citation
@@ -68,15 +67,3 @@ A BibTeX entry for LaTeX users is
     doi = {10.12688/f1000research.4680.2},
     pubmed = {25285208}
   }
-
-Updates
-------------
-
-- The package is now build using S4 classes; the current functions of shinyMethyl are no longer in used. The function shinySummarize() applied to a RGChannelSet object is now used to produce a shinyMethylSet, which is passed to runShinyMethyl() to launch a shinyMethyl session. Please see the vignette.
-- Fixed returnPCScores() dependency on annotation package. Thanks to Maarten van Iterson 
-- extractFromTargets450k() is temporarily non-available. Please use extractFromRGSet450k() instead. 
-- Bug fixed: M-value densities are now visible
-- With the update of minfi in Bioconductor 2.13, IlluminaHumanMethylation450kannotation.ilmn.v1.2 is no longer supported. ShinyMethyl is now updated to be annotation free (shinyMethyl does not really need an annotation). Thanks to Kathleen Fisch for pointing that out.
-- Within the predictGender panel, it is now possible to download a .csv file containing not only the predicted gender, but also the actual gender if it was provided in the phenotype data, it will be also included in the file. The function also handles missing data. Thanks to Brent Pedersen
-
-
