@@ -9,7 +9,8 @@ setClass("shinyMethylSet",
                         greenControls = "list",
                         redControls = "list",
                         pca = "list",
-                        originObject = "character"
+                        originObject = "character",
+                        array = "character"
                         )
          )
 
@@ -27,6 +28,7 @@ setValidity("shinyMethylSet", function(object) {
     redControls   <- object@redControls
     pca <- object@pca
     n <- length(sampleNames)
+    array <- object@array
 
     # Validity for phenotype
     if (!is.null(phenotype)){
@@ -87,7 +89,6 @@ setValidity("shinyMethylSet", function(object) {
       "EXTENSION", "HYBRIDIZATION", "NEGATIVE", "NON-POLYMORPHIC", "NORM_A", 
       "NORM_C", "NORM_G", "NORM_T", "SPECIFICITY I", "SPECIFICITY II", 
       "TARGET REMOVAL", "STAINING")
-    row.n <- c(12, 4, 4, 3, 613, 4, 32, 61, 32, 61, 12, 3, 2, 4)
 
 
     if (object@originObject != "GenomicRatioSet"){
@@ -96,16 +97,10 @@ setValidity("shinyMethylSet", function(object) {
       }
 
       if (!all.equal(control.names,names(greenControls)) | !all.equal(control.names,names(redControls))){
-        msg <- "Green controls and red controls names don't match the 450k control probes names defined in shinyMethyl"
-      }
-
-      if (!all.equal(as.numeric(unlist(lapply(greenControls,FUN=nrow))),row.n) | 
-        !all.equal(as.numeric(unlist(lapply(redControls,FUN=nrow))),row.n)){
-        msg <- "Green controls and red controls matrices don't have the right number of rows"
+        msg <- "Green controls and red controls names don't match the control probes names defined in shinyMethyl"
       }
 
        # Validity for PCA
-   
 
       if (!all.equal(names(pca), c("scores","percs"))){
         msg <- "Names of the pca list must be c(\"scores\",\"percs\")"
@@ -143,7 +138,8 @@ shinyMethylSet <- function(sampleNames = new("character"),
                            greenControls = new(vector("list",12)),
                            redControls = new(vector("list",12)),
                            pca = new("list"),
-                           originObject = new("character")
+                           originObject = new("character"),
+                           array = new("character")
                            ) {
     set <- new("shinyMethylSet", 
                sampleNames = sampleNames,
@@ -156,7 +152,8 @@ shinyMethylSet <- function(sampleNames = new("character"),
                greenControls = greenControls,
                redControls = redControls,
                pca = pca,
-               originObject = originObject
+               originObject = originObject, 
+               array = array
                )
     set
 }
@@ -213,6 +210,7 @@ setMethod("show",signature(object="shinyMethylSet"),
               nCovs <- ncol(object@phenotype)
               cat(" Phenotype: ",nCovs, "covariates \n")
               cat(" Origin object: ", object@originObject, "\n")
+              cat(" Array: ", object@array, "\n")
           })
 
 setMethod("getBeta",signature(object="shinyMethylSet"),

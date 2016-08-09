@@ -3,13 +3,12 @@
 \alias{shinyMethyl}
 \docType{package}
 \title{
-Interactive visualization for Illumina's 450k methylation arrays
+Interactive visualization for Illumina methylation arrays
 }
 \description{
-Interactive tool for visualizing Illumina's 450k array data
+Interactive tool for visualizing Illumina methylation array data (450k and EPIC arrays). 
 }
 \author{
 Jean-Philippe Fortin <jfortin@jhsph.edu>
 }
 \keyword{ package }
-
