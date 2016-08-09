@@ -58,6 +58,7 @@ setMethod("shinySummarize", signature(object = "RGChannelSet"),
 
               rm(r)
               rm(g)
+              gc(verbose=FALSE)
 
               cat("[shinySummarize] Raw preprocessing \n")
               mset <- minfi::preprocessRaw(object)
@@ -75,6 +76,7 @@ setMethod("shinySummarize", signature(object = "RGChannelSet"),
               autosomal <- unlist(probe.indices[1:3])
 
               rm(gmSet)
+              gc(verbose=FALSE)
               probs <- seq(from = 0, to = 1, length.out = 500)
               betaQuantiles <- vector("list", length(probe.indices)) 
               names(betaQuantiles) <- names(probe.indices)
@@ -98,7 +100,7 @@ setMethod("shinySummarize", signature(object = "RGChannelSet"),
               rm(unmethMatrix)
               rm(mMatrix)
               rm(cnMatrix)
-              
+              gc(verbose=FALSE)
               
               
               
@@ -107,6 +109,7 @@ setMethod("shinySummarize", signature(object = "RGChannelSet"),
               numPositions = 20000
               autMatrix <- betaMatrix[autosomal,]
               rm(betaMatrix)
+              gc(verbose=FALSE)
               o <- order(-rowVars(autMatrix))[1:numPositions]
               pca <- prcomp(t(autMatrix[o,]))
               pca = list(scores = pca$x, percs = (pca$sdev^2)/(sum(pca$sdev^2))*100)
@@ -124,7 +127,8 @@ setMethod("shinySummarize", signature(object = "RGChannelSet"),
                                         greenControls = greenControls ,
                                         redControls = redControls ,
                                         pca = pca,
-                                        originObject = "RGChannelSet"
+                                        originObject = "RGChannelSet",
+                                        array = object@annotation[["array"]]
                                         )
               object
           })
@@ -192,7 +196,8 @@ setMethod("shinySummarize", signature(object = "GenomicRatioSet"),
                                        greenControls = list(NULL),
                                        redControls = list(NULL),
                                        pca = pca,
-                                       originObject = "GenomicRatioSet"
+                                       originObject = "GenomicRatioSet",
+                                       array = object@annotation[["array"]]
                                        )
               object
           })

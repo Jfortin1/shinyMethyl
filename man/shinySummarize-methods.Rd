@@ -6,7 +6,7 @@
 \alias{shinySummarize,GenomicRatioSet-method}
 \title{Summarizing a large 450K experiment into a shinyMethylSet}
 \description{
- Summarizing methylation data from a RGChannelSet or GenomicRatioSet into a shinyMethylSet needed to launch the interactive interface of shinyMethyl.
+ Summarizing methylation data from a RGChannelSet or GenomicRatioSet into a shinyMethylSet needed to launch the interactive interface of shinyMethyl. That works for both the 450k and EPIC arrays. 
 }
 
 \usage{

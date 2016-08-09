@@ -103,7 +103,7 @@ server.shinyMethyl <- function(shinyMethylSet1, shinyMethylSet2=NULL){
             return(list(matrix.x = matrix.x, matrix.y = matrix.y))
 	})
         
-        ## Return x and y matrices of the densities for normalized data
+    ## Return x and y matrices of the densities for normalized data
 	returnDensityMatrixNorm <- reactive({
             if (is.null(shinyMethylSet2)){
                 return(NULL)
@@ -131,8 +131,9 @@ server.shinyMethyl <- function(shinyMethylSet1, shinyMethylSet2=NULL){
 ###########         Mouse clicks section
 #########################################################
 
-        ## Check if the selected sample is already in the list or not:
+    ## Check if the selected sample is already in the list or not:
 	check.mouse.clicks <- function(clickedIndex, mouse.click.indices){
+           
             if (length(mouse.click.indices)!=0){
                 if (clickedIndex %in% mouse.click.indices){
                     mouse.click.indices <- mouse.click.indices[mouse.click.indices!=clickedIndex]
@@ -142,37 +143,41 @@ server.shinyMethyl <- function(shinyMethylSet1, shinyMethylSet2=NULL){
             } else {
                 mouse.click.indices <- c(mouse.click.indices, clickedIndex)
             }
+
             return(mouse.click.indices)
 	}
-        
-        ## To update the list of mouse clicks from internal controls plot:
+    
+    ## To update the list of mouse clicks from internal controls plot:
 	updateMouseClicks <- reactive({
             
-            mouse.x <- input$controlsHover$x
-            mouse.y <- input$controlsHover$y
-            
-            y <- reactiveControlStat()	
+        mouse.x <- input$controlsHover$x
+        mouse.y <- input$controlsHover$y
+        if (!is.null(mouse.x) & !is.null(mouse.y)){
+            y <- reactiveControlStat()  
             n <- length(y)
             xDiff <- ((1:n)-rep(mouse.x, n)) / n
             yDiff <- (y - mouse.y)/(1.3*max(y))
             clickedIndex <- which.min(xDiff^2 + yDiff^2)
             names(clickedIndex) <- shinyMethylSet1@sampleNames[clickedIndex]
             
+         
             if (current.control.type == as.character(input$controlType)){
                 mouse.click.indices <<- check.mouse.clicks(clickedIndex, mouse.click.indices)
             }
             current.control.type <<- as.character(input$controlType)
-            mouse.click.indices
+        }
+        mouse.click.indices
 	})
-        ## To update the list of mouse clicks from quality control plot:
+    ## To update the list of mouse clicks from quality control plot:
 	updateMouseClicksQC <- reactive({
-            mouse.x <- input$qualityHover$x
-            mouse.y <- input$qualityHover$y
-            
+        mouse.x <- input$qualityHover$x
+        mouse.y <- input$qualityHover$y
+        
+        if (!is.null(mouse.x) & !is.null(mouse.y)){
             med <- as.integer(nrow(methQuantiles[[3]])/2)
-	    mediansU <- unlist(unmethQuantiles[[3]][med,])        
-	    mediansM <- unlist(methQuantiles[[3]][med,]) 
-            
+    	    mediansU <- unlist(unmethQuantiles[[3]][med,])        
+    	    mediansM <- unlist(methQuantiles[[3]][med,]) 
+                
             x <- log2(mediansU)
             y <- log2(mediansM)
             n <- length(y)
@@ -186,15 +191,19 @@ server.shinyMethyl <- function(shinyMethylSet1, shinyMethylSet2=NULL){
             names(clickedIndex) <- shinyMethylSet1@sampleNames[clickedIndex]
             mouse.click.indices <<- check.mouse.clicks(clickedIndex,
                                                        mouse.click.indices)
-            mouse.click.indices
+        }
+        mouse.click.indices
 	})
         
-        ## To update the list of mouse clicks from densities plot:
+    ## To update the list of mouse clicks from densities plot:
 	updateMouseClicksDensities <- reactive({
-            mouse.x <- input$densitiesHover$x
-            mouse.y <- input$densitiesHover$y
-            
-                                        # If Beta values are selected
+        mouse.x <- input$densitiesHover$x
+        mouse.y <- input$densitiesHover$y
+        #print(mouse.x)
+        #print(mouse.y)
+        
+        if (!is.null(mouse.x) & !is.null(mouse.y)){
+        # If Beta values are selected
             if (input$mOrBeta=="Beta-value") {
                 if (input$probeType == "II"){
                     ylim <- c(0,6)
@@ -227,14 +236,16 @@ server.shinyMethyl <- function(shinyMethylSet1, shinyMethylSet2=NULL){
                 current.probe.type <<- as.character(input$probeType)
                 current.density.type <<- as.character(input$mOrBeta)
             }
-            mouse.click.indices
+        }
+        mouse.click.indices
 	})
         
-        ## To update the list of mouse clicks from normalized densities plot:
+    ## To update the list of mouse clicks from normalized densities plot:
 	updateMouseClicksDensitiesNorm <- reactive({
-            mouse.x <- input$normHover$x
-            mouse.y <- input$normHover$y
-            
+        mouse.x <- input$normHover$x
+        mouse.y <- input$normHover$y
+        
+        if (!is.null(mouse.x) & !is.null(mouse.y)){
             ## If Beta values are selected
             if (input$mOrBeta=="Beta-value") {
                 if (input$probeType == "II"){
@@ -263,10 +274,11 @@ server.shinyMethyl <- function(shinyMethylSet1, shinyMethylSet2=NULL){
                 mouse.click.indices <<- check.mouse.clicks(clickedIndex,
                                                            mouse.click.indices)
             }
-            mouse.click.indices
+        }
+        mouse.click.indices
 	})
         
-        ## To update the list from all plots:
+    ## To update the list from all plots:
 	reactive.mouse.click.indices <- reactive({
             updateMouseClicks()
             updateMouseClicksQC()
@@ -275,7 +287,7 @@ server.shinyMethyl <- function(shinyMethylSet1, shinyMethylSet2=NULL){
             return(mouse.click.indices)
 	})
         
-        ## Print the list of selected samples:
+    ## Print the list of selected samples:
 	output$cumulativeListPrint <- renderPrint({
             names <- names(reactive.mouse.click.indices())
             n <- length(names)
@@ -549,7 +561,7 @@ server.shinyMethyl <- function(shinyMethylSet1, shinyMethylSet2=NULL){
                 dataToReturn$givenGender <- givenGender
                 dataToReturn$agree <- agree
             }
-            rownames(dataToReturn) <- names(predictedGender)
+            rownames(dataToReturn) <- sampleNames
             return(dataToReturn)
         })
         
@@ -690,32 +702,7 @@ server.shinyMethyl <- function(shinyMethylSet1, shinyMethylSet2=NULL){
                                  legendTitle = input$phenotype)
         })
 
-#########################################################
-###########       KnitR Report
-#########################################################
-
-	# ## To create the knitr bootstrap report:
-	# createReport <- reactive({
- #            if (input$create.report!=0){
- #                opts_chunk$set(fig.width = 7, fig.height = 5)
- #                knit_bootstrap("makereport.Rmd", quiet=TRUE,
- #                               chooser=c('boot', 'code'),
- #                               boot_style = "United",
- #                               thumbsize=9,  show_code=FALSE)
- #                system('open makereport.html')
- #            }
-	# })
-	# ## Message when the html report is created:
-	# output$reportPrint <- renderPrint({
- #            createReport()
- #            if (input$create.report!=0){
- #                cat("A html report has been saved") 
- #            }
-	# })
         
-
-
-
 
 
 #########################################################
