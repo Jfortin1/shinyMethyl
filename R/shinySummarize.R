@@ -45,13 +45,9 @@ setMethod("shinySummarize", signature(object = "RGChannelSet"),
               names(greenControls) <- names(redControls) <- controlType
 
               for (i in 1:length(controlType)){
-                  if (controlType[i]!="STAINING"){
-                      ctrlAddress <- minfi::getControlAddress(
-                          object, controlType = controlType[i])
-                  } else {
-                      ctrlAddress <- minfi::getControlAddress(
-                          object, controlType = controlType[i])[c(2,3,4,6)]
-                  }
+                  ctrlAddress <- minfi::getControlAddress(
+                      object, controlType = controlType[i])
+  
                   redControls[[i]]=r[ctrlAddress,]
                   greenControls[[i]]=g[ctrlAddress,]
               }
