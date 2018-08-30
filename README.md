@@ -15,9 +15,10 @@ Installation
 First, you will need to install at least the following packages from Bioconductor
 
 ```{r}
-source("http://bioconductor.org/biocLite.R")
-biocLite("minfi")
-biocLite("minfiData")
+if (!requireNamespace("BiocManager", quietly=TRUE))
+    install.packages("BiocManager")
+BiocManager::install("minfi")
+BiocManager::install("minfiData")
 ```
 and from CRAN
 ```{r}
