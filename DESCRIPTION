@@ -1,17 +1,31 @@
 Package: shinyMethyl
 Title: Interactive visualization for Illumina methylation arrays
-Version: 1.8.3
-Authors@R: c(person("Jean-Philippe", "Fortin", role = c("cre", "aut"),
-                    email = "jfortin@jhsph.edu"),
-             person(c("Kasper", "Daniel"), "Hansen", role = "aut"))
-Depends: methods, BiocGenerics (>= 0.3.2), shiny (>= 0.13.2), minfi (>= 1.18.2),
-        IlluminaHumanMethylation450kmanifest, matrixStats,
-        R (>= 3.0.0)
+Description: Interactive tool for visualizing Illumina methylation array data.
+    Both the 450k and EPIC array are supported. 
+Version: 1.8.4
+Authors@R: c(
+    person("Jean-Philippe", "Fortin", role = c("cre", "aut"), email = "fortin946@gmail.com"),
+    person(c("Kasper", "Daniel"), "Hansen", role = "aut"))
+Depends: R (>= 3.0.0),
+    methods,
+    BiocGenerics (>= 0.3.2),
+    shiny (>= 0.13.2),
+    minfi (>= 1.18.2),
+    IlluminaHumanMethylation450kmanifest,
+    matrixStats
 Imports: RColorBrewer
-Suggests: shinyMethylData, minfiData, BiocStyle, RUnit, digest, knitr
-Description: Interactive tool for visualizing Illumina methylation array data. Both the 450k and EPIC array are supported. 
-Url: https://github.com/Jfortin1/shinyMethyl
+Suggests:
+    shinyMethylData,
+    minfiData,
+    BiocStyle,
+    RUnit,
+    digestknitr
+URL: https://github.com/Jfortin1/shinyMethyl
 VignetteBuilder: knitr
 License: Artistic-2.0
-biocViews: DNAMethylation, Microarray, TwoChannel, Preprocessing,
-        QualityControl
+biocViews:
+    DNAMethylation,
+    Microarray,
+    TwoChannel,
+    Preprocessing,
+    QualityControl
