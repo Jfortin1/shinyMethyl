@@ -1,6 +1,9 @@
-plotDesign450k <- function(sampleNames, covariates, legendTitle){
+plotDesign450k <- function(sampleNames,
+                           covariates,
+                           legendTitle
+){
     boxColors <- buildColors(sampleNames, covariates)
-    nLevels <- length(unique(boxColors))
+    nLevels   <- length(unique(boxColors))
     naPos <- boxColors=="NA"
     boxColors <- factor(boxColors)
     oldLevels <- levels(boxColors)
@@ -13,15 +16,21 @@ plotDesign450k <- function(sampleNames, covariates, legendTitle){
     numberOfChips <- length(unique(substr(sampleNames,1,10)))
     nrows <- ceiling(numberOfChips/8)
     par(pin=c(width=5,heigth=5),mai=c(0,0,1,0))
-    plot(0:(nrows+1), seq(0,nrows,nrows/(nrows+1)),
-         type="n",axes=FALSE,xlab="",ylab="",
+    plot(0:(nrows+1),
+         seq(0,nrows,nrows/(nrows+1)),
+         type="n",
+         axes=FALSE,
+         xlab="",
+         ylab="",
          main = "Illumina HumanMethylation 450K Array Design")
     
-    for (i in 1:nrows){
-        plotRow(leftMargin= 0, plateytop=(i+0.75)-1, plateybottom=i-1,
-                color = boxColors[(96*(i-1)+1):(96*i)])
+    for (i in seq_len(nrows)){
+        plotRow(leftMargin=0,
+                plateytop=(i+0.75)-1,
+                plateybottom=i-1,
+                color=boxColors[(96*(i-1)+1):(96*i)])
     }
-    legendColors <- 1: (nLevels)
+    legendColors <- seq_len(nLevels)
     legendPch <- rep(15, nLevels)
     if (sum(naPos)>0){
         legendColors[oldLevels=="NA"] <- "black"
@@ -29,7 +38,12 @@ plotDesign450k <- function(sampleNames, covariates, legendTitle){
     }
 }
 
-plotLegendDesign450k <- function(sampleNames, covariates, legendTitle){
+
+#' @importFrom graphics legend
+plotLegendDesign450k <- function(sampleNames,
+                                 covariates,
+                                 legendTitle
+){
     boxColors <- buildColors(sampleNames, covariates)
     nLevels <- length(unique(boxColors))
     naPos <- boxColors=="NA"
@@ -41,20 +55,32 @@ plotLegendDesign450k <- function(sampleNames, covariates, legendTitle){
         boxColors[naPos] <- "white"
     }
     
-    legendColors <- 1: (nLevels)
+    legendColors <- seq_len(nLevels)
     legendPch <- rep(15, nLevels)
     
     if ("NA" %in% oldLevels){
         legendColors[oldLevels=="NA"] <- "white"
     }
     
-    plot(0,xaxt='n',yaxt='n',bty='n',pch='',ylab='',xlab='')
-    legend("topright", pch= legendPch, col = legendColors,
-           oldLevels, cex=1.5, title= legendTitle)  
+    plot(0,
+         xaxt='n',
+         yaxt='n',
+         bty='n',
+         pch='',
+         ylab='',
+         xlab='')
+    legend("topright",
+           pch= legendPch,
+           col = legendColors,
+           oldLevels,
+           cex=1.5,
+           title= legendTitle)
 }
 
 ## To build the color palette for the rectangles
-buildColors <- function(sampleNames, colCovariate){
+buildColors <- function(sampleNames,
+                        colCovariate
+){
     colCovariate[is.na(colCovariate)] <- "NA"
     colCovariate <- as.character(colCovariate)
     chipInfo <- substr(sampleNames,1,10)
@@ -63,7 +89,7 @@ buildColors <- function(sampleNames, colCovariate){
     numberOfChips <- length(unique(chipInfo))
     boxColors <- rep("NA",numberOfChips*12)
     
-    for (i in 1:numberOfChips){
+    for (i in seq_len(numberOfChips)){
         for (columnIndex in 1:2){
             for (rowIndex in 1:6){
                 indices <- intersect(which(chipInfo == unique(chipInfo)[i]),
@@ -81,23 +107,39 @@ buildColors <- function(sampleNames, colCovariate){
 
 
 ### To plot a row of plates
-plotRow <- function(leftMargin, plateytop, plateybottom, color){
+plotRow <- function(leftMargin,
+                    plateytop,
+                    plateybottom,
+                    color
+){
     unit <- (plateytop - plateybottom)/6
     rightMargin = 1+23*unit
-    platePosition <- seq(leftMargin,rightMargin, (rightMargin-leftMargin)/(7))
-    for (j in 1:length(platePosition)){
-        plotPlate(plateybottom=plateybottom, plateytop=plateytop,
-                  platePosition[j], color[(12*(j-1)+1):(12*j)])
+    platePosition <- seq(leftMargin,
+                         rightMargin,
+                         (rightMargin-leftMargin)/(7))
+    for (j in seq_along(platePosition)){
+        plotPlate(plateybottom=plateybottom,
+                  plateytop=plateytop,
+                  platePosition[j],
+                  color[(12*(j-1)+1):(12*j)])
     }
 }
 
 
 ## To plot a single array
-plotPlate <- function(plateybottom, plateytop, platexleft, color){
+#' @importFrom graphics rect
+plotPlate <- function(plateybottom,
+                      plateytop,
+                      platexleft,
+                      color
+){
     platexright <- platexleft + (plateytop - plateybottom)/3
-    rect(ybottom = plateybottom, ytop = plateytop, 
-         xleft= platexleft, xright = platexright, 
-         lwd=2, col=0)
+    rect(ybottom=plateybottom,
+         ytop=plateytop,
+         xleft=platexleft,
+         xright=platexright,
+         lwd=2,
+         col=0)
     
     startsColumn1 <- sort(seq(plateybottom, plateytop,
                               (plateytop-plateybottom)/6), decreasing=TRUE)[-1]
@@ -105,7 +147,7 @@ plotPlate <- function(plateybottom, plateytop, platexleft, color){
                              (plateytop-plateybottom)/6), decreasing=TRUE)[-7]
     
     ## For plotting the left column:
-    for (k in 1:length(startsColumn1)){
+    for (k in seq_along(startsColumn1)){
         rect(ybottom = startsColumn1[k], 
              ytop=endsColumn1[k], 
              xleft = platexleft, 
@@ -115,7 +157,7 @@ plotPlate <- function(plateybottom, plateytop, platexleft, color){
     }
     
     ## For plotting the right column:
-    for (v in 1:length(startsColumn1)){
+    for (v in seq_along(startsColumn1)){
         rect(ybottom = startsColumn1[v], 
              ytop=endsColumn1[v],
              xleft = (platexleft+platexright)/2, 

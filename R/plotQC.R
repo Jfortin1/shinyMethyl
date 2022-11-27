@@ -1,5 +1,9 @@
-plotQC <- function(unmethQuantiles, methQuantiles, 
-                   sampleNames, col, bty="o"){
+plotQC <- function(unmethQuantiles,
+                   methQuantiles, 
+                   sampleNames,
+                   col,
+                   bty="o"
+){
     
     slideNames <- substr(sampleNames,1,10)
     
@@ -14,13 +18,23 @@ plotQC <- function(unmethQuantiles, methQuantiles,
     ylim1 <- min(y)-0.2*range.y
     ylim2 <- max(y)+0.2*range.y
     
-    plot(x, y, xlim = c(xlim1, xlim2), ylim = c(ylim1, ylim2),
-         cex = 1, pch = 20, col = col, main = "QC Plot", bty=bty)
+    plot(x,
+         y,
+         xlim = c(xlim1, xlim2),
+         ylim = c(ylim1, ylim2),
+         cex = 1,
+         pch = 20,
+         col = col,
+         main = "QC Plot",
+         bty=bty)
     grid()
 }
 
-addHoverQC <- function(y, selectedSamples = c(),
-                       unmethQuantiles, methQuantiles){
+addHoverQC <- function(y,
+                       selectedSamples = c(),
+                       unmethQuantiles,
+                       methQuantiles
+){
     med <- as.integer(nrow(methQuantiles[[3]])/2)
     mediansU <- unlist(unmethQuantiles[[3]][med,])
     mediansM <- unlist(methQuantiles[[3]][med,])
@@ -30,10 +44,15 @@ addHoverQC <- function(y, selectedSamples = c(),
     if (n>=1){
         points(log2(mediansU[selectedSamples[n]]), 
                log2(mediansM[selectedSamples[n]]),
-               col = "black", cex=3, pch=1, lwd=2)
+               col = "black",
+               cex=3,
+               pch=1,
+               lwd=2)
     }
     ## Make the points black:
     points(log2(mediansU[selectedSamples]), 
            log2(mediansM[selectedSamples]),
-           col = "black", cex = 1, pch = 17)
+           col = "black",
+           cex = 1,
+           pch = 17)
 }

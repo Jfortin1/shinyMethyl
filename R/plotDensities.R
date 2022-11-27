@@ -1,18 +1,33 @@
 ## Plot of the densities
-densitiesPlot <- function(matrix.x, matrix.y, quantiles,
-                          sampleNames, bw, main, xlab, xlim,
-                          ylim, lty = 1, lwd =1, mean = FALSE,
-                          col, from, to, bty = "o"){
-    meanSample <- apply(matrix.x,1,mean)
-    plot(matrix.x[,1] , matrix.x[,2], 
-         main = main, 
-         ylab = "Density", 
-         xlab = xlab,
-         col = "white",
-         xlim = xlim, 
-         ylim = ylim, bty = bty
-         )
-    ##rect(par("usr")[1], par("usr")[3], par("usr")[2], par("usr")[4], col = "black")
+#' @importFrom stats density
+#' @importFrom graphics lines
+densitiesPlot <- function(matrix.x,
+                          matrix.y,
+                          quantiles,
+                          sampleNames,
+                          bw,
+                          main,
+                          xlab,
+                          xlim,
+                          ylim,
+                          lty=1,
+                          lwd=1,
+                          mean=FALSE,
+                          col,
+                          from,
+                          to,
+                          bty="o"
+){
+    meanSample <- apply(matrix.x, 1, mean)
+    plot(matrix.x[,1],
+         matrix.x[,2],
+         main=main,
+         ylab="Density", 
+         xlab=xlab,
+         col="white",
+         xlim=xlim, 
+         ylim=ylim,
+         bty=bty)
 
     ## Will plot individual densities        
     if (!mean){
@@ -22,10 +37,12 @@ densitiesPlot <- function(matrix.x, matrix.y, quantiles,
         matrix.x <- matrix.x[,o]
         matrix.y <- matrix.y[,o]
         
-        
-        for (j in 1:ncol(matrix.x)){
-            lines(matrix.x[,j], matrix.y[,j],
-                  col= col[j], lwd = lwd, lty=lty)
+        for (j in seq_len(ncol(matrix.x))){
+            lines(matrix.x[,j],
+                  matrix.y[,j],
+                  col=col[j],
+                  lwd=lwd,
+                  lty=lty)
         }
     } else {
         ## Make sure to remove missing values
@@ -43,22 +60,37 @@ densitiesPlot <- function(matrix.x, matrix.y, quantiles,
             } else {
                 currentMean <- apply(quantiles[,indices],1,mean)
             }
-            lines(density(currentMean, bw = bw, from= from, to = to),
-                  lwd = lwd, lty=lty, col=current.color)
+            lines(density(currentMean, bw=bw, from=from, to=to),
+                  lwd=lwd,
+                  lty=lty,
+                  col=current.color)
         }
     }
 }
 
+
 ## To add selected density
-addHoverDensity <- function(selectedSamples = c(), sampleNames,
-                            matrix.x, matrix.y, col){
+#' @importFrom graphics lines
+addHoverDensity <- function(selectedSamples=c(),
+                            sampleNames,
+                            matrix.x,
+                            matrix.y,
+                            col
+){
     n <- length(selectedSamples)
     if (n >= 1){
-        for (kk in 1:n){
-            lines(matrix.x[,selectedSamples[kk]],matrix.y[,selectedSamples[kk]],
-                  col="black",lwd = 4, lty=3)
+        for (kk in seq_len(n)){
+            lines(matrix.x[,selectedSamples[kk]],
+                  matrix.y[,selectedSamples[kk]],
+                  col="black",
+                  lwd=4,
+                  lty=3)
         }
-        lines(matrix.x[,selectedSamples[n]],matrix.y[,selectedSamples[n]],
-              col="black",lwd = 3, lty=1)
+        lines(matrix.x[,selectedSamples[n]],
+              matrix.y[,selectedSamples[n]],
+              col="black",
+              lwd=3,
+              lty=1)
     }
 }
+

@@ -1,3 +1,4 @@
+#' @export
 setClass("shinyMethylSet", 
          representation(sampleNames = "character",
                         phenotype = "data.frame",
@@ -10,11 +11,13 @@ setClass("shinyMethylSet",
                         redControls = "list",
                         pca = "list",
                         originObject = "character",
-                        array = "character"
-                        )
-         )
+                        array = "character")
+)
 
-setValidity("shinyMethylSet", function(object) { 
+
+
+#' @importFrom BiocGenerics rownames
+setValidity("shinyMethylSet", function(object){
     msg <- NULL
     
     phenotype <- object@phenotype
@@ -32,13 +35,13 @@ setValidity("shinyMethylSet", function(object) {
 
     # Validity for phenotype
     if (!is.null(phenotype)){
-      if (n != nrow(phenotype)){
-        msg <- "Phenotype data.frame must have the same length as the sampleNames"
-      }
+        if (n != nrow(phenotype)){
+            msg <- "Phenotype data.frame must have the same length as the sampleNames"
+        }
 
-       if (sum(!(sampleNames %in% rownames(phenotype)))>0){
-        msg <- "rownames of the phenotype data.frame must correspond to the sampleNames"
-       }
+        if (sum(!(sampleNames %in% rownames(phenotype)))>0){
+            msg <- "rownames of the phenotype data.frame must correspond to the sampleNames"
+        }
     }
 
     # Validity for the quantiles list
@@ -55,7 +58,7 @@ setValidity("shinyMethylSet", function(object) {
     }
 
     dim.quantile.validity <- function(quantiles, n.col, quantiles.name){
-      n.row.vector <- as.numeric(unlist(lapply(quantiles,FUN=nrow)))
+      n.row.vector <- as.numeric(unlist(lapply(quantiles, FUN=nrow)))
       if (length(unique(n.row.vector)) != 1){
         msg <- paste0("All matrices of the ",quantiles.name, " quantiles list must have the same number of rows")
         return(msg)
@@ -80,54 +83,62 @@ setValidity("shinyMethylSet", function(object) {
 
 
     if (object@originObject != "GenomicRatioSet"){
-      msg <- dim.quantile.validity(methQuantiles, n.col=n, "methQuantiles")
-      msg <- dim.quantile.validity(unmethQuantiles, n.col=n, "unmethQuantiles")
+        msg <- dim.quantile.validity(methQuantiles, n.col=n, "methQuantiles")
+        msg <- dim.quantile.validity(unmethQuantiles, n.col=n, "unmethQuantiles")
     }
 
     # Validity for controls:
-    control.names <- c("BISULFITE CONVERSION I", "BISULFITE CONVERSION II", 
-      "EXTENSION", "HYBRIDIZATION", "NEGATIVE", "NON-POLYMORPHIC", "NORM_A", 
-      "NORM_C", "NORM_G", "NORM_T", "SPECIFICITY I", "SPECIFICITY II", 
-      "TARGET REMOVAL", "STAINING")
+    control.names <- c("BISULFITE CONVERSION I",
+                       "BISULFITE CONVERSION II",
+                       "EXTENSION",
+                       "HYBRIDIZATION",
+                       "NEGATIVE",
+                       "NON-POLYMORPHIC",
+                       "NORM_A",
+                       "NORM_C",
+                       "NORM_G",
+                       "NORM_T",
+                       "SPECIFICITY I",
+                       "SPECIFICITY II",
+                       "TARGET REMOVAL",
+                       "STAINING")
 
 
     if (object@originObject != "GenomicRatioSet"){
-      if (length(greenControls) != 14 | length(redControls) != 14){
-        msg <- "The greenControls and redControls lists must be of length 14"
-      }
+        if (length(greenControls) != 14 | length(redControls) != 14){
+            msg <- "The greenControls and redControls lists must be of length 14"
+        }
 
-      if (!all.equal(control.names,names(greenControls)) | !all.equal(control.names,names(redControls))){
-        msg <- "Green controls and red controls names don't match the control probes names defined in shinyMethyl"
-      }
+        if (!all.equal(control.names,names(greenControls)) | !all.equal(control.names,names(redControls))){
+            msg <- "Green controls and red controls names don't match the control probes names defined in shinyMethyl"
+        }
 
        # Validity for PCA
 
-      if (!all.equal(names(pca), c("scores","percs"))){
-        msg <- "Names of the pca list must be c(\"scores\",\"percs\")"
-      }
-      scores <- pca$scores
-      percs  <- pca$percs
+        if (!all.equal(names(pca), c("scores","percs"))){
+            msg <- "Names of the pca list must be c(\"scores\",\"percs\")"
+        }
+        scores <- pca$scores
+        percs  <- pca$percs
 
-      if (ncol(scores) !=n | nrow(scores) !=n){
-        msg <- "nrow(pca$scores) and ncol(pca$scores) must be equal to the length of sampleNames"
-      }
+        if (ncol(scores) !=n | nrow(scores) !=n){
+            msg <- "nrow(pca$scores) and ncol(pca$scores) must be equal to the length of sampleNames"
+        }
 
-      if (length(percs)!=n){
-        msg <- "Length of pca$percs must be equal to the length of sampleNames"
-      }
+        if (length(percs)!=n){
+            msg <- "Length of pca$percs must be equal to the length of sampleNames"
+        }
 
-      if (sum(!(rownames(scores) %in% sampleNames))!=0) {
-        msg <- "Rownames of pca$scores must be the sampleNames"
-      }
-
+        if (sum(!(rownames(scores) %in% sampleNames))!=0) {
+            msg <- "Rownames of pca$scores must be the sampleNames"
+        }
     }
 
-   
     if (is.null(msg)) TRUE else msg
 }) 
 
 
-
+#' @export
 shinyMethylSet <- function(sampleNames = new("character"), 
                            phenotype = new("data.frame"),  
                            mQuantiles = new(vector("list",5)),
@@ -140,7 +151,7 @@ shinyMethylSet <- function(sampleNames = new("character"),
                            pca = new("list"),
                            originObject = new("character"),
                            array = new("character")
-                           ) {
+){
     set <- new("shinyMethylSet", 
                sampleNames = sampleNames,
                phenotype = phenotype,
@@ -153,11 +164,12 @@ shinyMethylSet <- function(sampleNames = new("character"),
                redControls = redControls,
                pca = pca,
                originObject = originObject, 
-               array = array
-               )
-    set
+               array = array)
+    return(set)
 }
 
+
+#' @export
 orderByName <- function(object){
     stopifnot(is(object, "shinyMethylSet"))
     sampleNames    <- object@sampleNames
@@ -168,8 +180,7 @@ orderByName <- function(object){
     designInfo <- data.frame(sampleNames = sampleNames,
                              slideNames  = slideNames,
                              arrayNames  = arrayNames,
-                             plateNames  = plateNames
-                             )
+                             plateNames  = plateNames)
     designInfo <- designInfo[order(plateNames,slideNames,arrayNames), ]
     o <- match(designInfo$sampleNames, sampleNames)
     for (i in 1:length(object@betaQuantiles)){
@@ -199,9 +210,11 @@ orderByName <- function(object){
         object@redControls[[i]]   <- object@redControls[[i]][,o]
     }
     
-    object
+    return(object)
 }
 
+
+#' @export
 setMethod("show",signature(object="shinyMethylSet"),
           function(object){
               cat(" Object: ",class(object),"\n")
@@ -211,114 +224,114 @@ setMethod("show",signature(object="shinyMethylSet"),
               cat(" Phenotype: ",nCovs, "covariates \n")
               cat(" Origin object: ", object@originObject, "\n")
               cat(" Array: ", object@array, "\n")
-          })
+})
 
+
+#' @importFrom minfi getBeta
+#' @export
 setMethod("getBeta",signature(object="shinyMethylSet"),
           function(object){
-              object@betaQuantiles
-          })
+    object@betaQuantiles
+})
 
+#' @importFrom Biobase pData
+#' @export
 setMethod("pData",signature(object="shinyMethylSet"),
           function(object){
-              object@phenotype
-          })
+    object@phenotype
+})
 
+
+#' @importFrom minfi getMeth
+#' @export
 setMethod("getMeth",signature(object="shinyMethylSet"),
           function(object){
-              object@methQuantiles
-          })
+    object@methQuantiles
+})
 
+#' @importFrom minfi getUnmeth
+#' @export
 setMethod("getUnmeth",signature(object="shinyMethylSet"),
           function(object){
-              object@unmethQuantiles
-          })
+    object@unmethQuantiles
+})
 
+#' @importFrom minfi getM
+#' @export
 setMethod("getM",signature(object="shinyMethylSet"),
           function(object){
-              object@mQuantiles
-          })
+    object@mQuantiles
+})
 
+#' @importFrom minfi getCN
+#' @export
 setMethod("getCN",signature(object="shinyMethylSet"),
           function(object){
-              object@cnQuantiles
-          })
+    object@cnQuantiles
+})
 
 
+
+#' @export
 getGreenControls <- function(shinyMethylSet){
-  shinyMethylSet@greenControls
+      shinyMethylSet@greenControls
 }
 
+#' @export
 getRedControls <- function(shinyMethylSet){
-  shinyMethylSet@redControls
+      shinyMethylSet@redControls
 }
 
-#setMethod("getGreenControls",signature(object="shinyMethylSet"),
-#          function(object){
-#              object@greenControls
-#          })
 
-#setMethod("getRedControls",signature(object="shinyMethylSet"),
-#          function(object){
-#              object@redControls
-#          })
-
-
+#' @export
 getPCA <- function(shinyMethylSet){
-  shinyMethylSet@pca
+    shinyMethylSet@pca
 }
 
-#setMethod("getPCA",signature(object="shinyMethylSet"),
-#          function(object){
-#              object@pca
-#          })
 
+
+#' @importFrom Biobase sampleNames
+#' @export
 setMethod("sampleNames",signature(object="shinyMethylSet"),
           function(object){
-              object@sampleNames
-          })
+    object@sampleNames
+})
 
-
-## setMethod("getSex", signature(object="shinyMethylSet"),
-## function(object, cutoff = -2){
-## nQuantiles <- nrow(object@cnQuantiles)
-## mid <- as.integer(nQuantiles/2)
-## xMed <- object@cnQuantiles$X[mid,]
-## yMed <- object@cnQuantiles$Y[mid,]
-## dd <- yMed - xMed
-## k <- kmeans(dd, centers = c(min(dd), max(dd)))
-
-## sex0 <- ifelse(dd < cutoff, "F", "M")
-## sex0 <- .checkSex(sex0)
-## sex1 <- ifelse(k$cluster == which.min(k$centers), "F", "M")
-## sex1 <- .checkSex(sex1)
-
-## if(!identical(sex0,sex1))
-## warning("An inconsistency was encountered while determining sex. One possibility is that only one sex is present. 
-## We recommend further checks, for example with the plotSex function.")
-## df <- DataFrame(xMed = xMed, yMed = yMed, predictedSex = sex0)
-## rownames(df) <- object@sampleNames
-## df
-## })
 
 
 .checkSex <- function(sex) {
     if(! (is.character(sex) && !any(is.na(sex)) && all(sex %in% c("M", "F"))))
         stop("'sex' seems wrong (needs to be a character, without missing values, of 'M' and 'F'")
-    sex
+    return(sex)
 }
 
-setMethod("combine",signature(x="shinyMethylSet", y="shinyMethylSet"), function(x,y) {
+
+#' @importFrom BiocGenerics combine
+#' @export
+setMethod("combine",
+          signature(x="shinyMethylSet",
+                    y="shinyMethylSet"),
+          function(x,y){
     .shinyCombine(x,y)
 })
 
+
 ## Function to combine two shinyMethylSet.
-.shinyCombine <- function(shinyMethylSet1, shinyMethylSet2){
-    if (!is(shinyMethylSet1, "shinyMethylSet") | !is(shinyMethylSet2, "shinyMethylSet") ){
-        stop("Both objects must be shinyMethylSet")
+.shinyCombine <- function(shinyMethylSet1,
+                          shinyMethylSet2
+){
+    if (!is(shinyMethylSet1, "shinyMethylSet")){
+        stop("First object must be a shinyMethylSet.")
     }
+    if (!is(shinyMethylSet2, "shinyMethylSet")){
+        stop("Second object must be a shinyMethylSet.")
+    }
+
     c.shinyMethylSet <- new("shinyMethylSet")
-    c.shinyMethylSet@sampleNames <- c(shinyMethylSet1@sampleNames, shinyMethylSet2@sampleNames)
-    c.shinyMethylSet@phenotype   <- rbind(shinyMethylSet1@phenotype, shinyMethylSet2@phenotype)
+    c.shinyMethylSet@sampleNames <- c(shinyMethylSet1@sampleNames,
+                                      shinyMethylSet2@sampleNames)
+    c.shinyMethylSet@phenotype   <- rbind(shinyMethylSet1@phenotype,
+                                          shinyMethylSet2@phenotype)
     
     ## Merging the quantile matrices
     for (i in 1:5){
@@ -333,9 +346,11 @@ setMethod("combine",signature(x="shinyMethylSet", y="shinyMethylSet"), function(
         c.shinyMethylSet@cnQuantiles[[i]] <- cbind(shinyMethylSet1@cnQuantiles[[i]],
                                                    shinyMethylSet2@cnQuantiles[[i]])
     }
-    names(c.shinyMethylSet@mQuantiles) <- names(c.shinyMethylSet@betaQuantiles) <- 
-        names(c.shinyMethylSet@methQuantiles) <- names(c.shinyMethylSet@unmethQuantiles) <-
-            names(c.shinyMethylSet@cnQuantiles) <- names(shinyMethylSet1@mQuantiles)
+    names(c.shinyMethylSet@mQuantiles)      <- names(shinyMethylSet1@mQuantiles)
+    names(c.shinyMethylSet@betaQuantiles)   <- names(shinyMethylSet1@mQuantiles)
+    names(c.shinyMethylSet@methQuantiles)   <- names(shinyMethylSet1@mQuantiles)
+    names(c.shinyMethylSet@unmethQuantiles) <- names(shinyMethylSet1@mQuantiles)
+    names(c.shinyMethylSet@cnQuantiles)     <- names(shinyMethylSet1@mQuantiles)
     
     ## Merging the control matrices
     for (i in 1:14){
@@ -344,10 +359,11 @@ setMethod("combine",signature(x="shinyMethylSet", y="shinyMethylSet"), function(
         c.shinyMethylSet@redControls[[i]] <- cbind(shinyMethylSet1@redControls[[i]],
                                                    shinyMethylSet2@redControls[[i]])
     }
-    names(c.shinyMethylSet@greenControls) <- names(c.shinyMethylSet@redControls) <-
-        names(shinyMethylSet1@redControls)
+    names(c.shinyMethylSet@greenControls) <- names(shinyMethylSet1@greenControls)
+    names(c.shinyMethylSet@redControls)   <- names(shinyMethylSet1@redControls)
+        
     c.shinyMethylSet@pca <- list() # PCA information is lost. 
     c.shinyMethylSet@originObject <- "Merging"
-    c.shinyMethylSet
+    return(c.shinyMethylSet)
 }
 

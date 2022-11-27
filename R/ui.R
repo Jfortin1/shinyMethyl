@@ -1,6 +1,11 @@
 #### Created by Jean-Philippe Fortin
 #### March 28, 2014
 
+#' @importFrom shiny pageWithSidebar sidebarPanel wellPanel mainPanel
+#' @importFrom shiny tabsetPanel tabPanel conditionalPanel
+#' @importFrom shiny selectInput sliderInput checkboxInput plotOutput
+#' @importFrom shiny downloadLink verbatimTextOutput
+#' @importFrom htmltools div HTML
 ui.shinyMethyl <- function(shinyMethylSet1, shinyMethylSet2=NULL){
     betaQuantiles   <- getBeta(shinyMethylSet1)
     mQuantiles      <- getM(shinyMethylSet1)

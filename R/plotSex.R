@@ -10,13 +10,16 @@ returnGivenGender <- function(covariates){
             givenGender <- as.character(covariates[,goodColumn])
             givenGender <- substr(toupper(givenGender),1,1)
             givenGender <- as.character(givenGender)
-        }}
+        }
+    }
     
     return(givenGender)
 }
 
 ## Predict gender with X and Y chr intensities
-returnPredictedGender <- function(cnQuantiles, cutoff = (-0.3)){
+returnPredictedGender <- function(cnQuantiles,
+                                  cutoff = (-0.3)
+){
     ## It assumes that cnQuantiles is a list containing $X and $Y
     X <- cnQuantiles$X
     Y <- cnQuantiles$Y
@@ -28,15 +31,19 @@ returnPredictedGender <- function(cnQuantiles, cutoff = (-0.3)){
     n <- length(diff)
     
     predictedGender = rep("M", n)
-    predictedGender[which(diff < cutoff)] <- "F"     
-    names(predictedGender) <- colnames(X)   
+    predictedGender[which(diff < cutoff)] <- "F"
+    names(predictedGender) <- colnames(X)
     
     predictedGender <- as.character(predictedGender)
     return(predictedGender)
 }
 
-plotPredictedGender <- function(cnQuantiles,cutoff =(-0.3),
-                                color = NULL, legend=TRUE, bty="o"){
+plotPredictedGender <- function(cnQuantiles,
+                                cutoff =(-0.3),
+                                color = NULL,
+                                legend=TRUE,
+                                bty="o"
+){
     X <- cnQuantiles$X
     Y <- cnQuantiles$Y
     med <- floor(nrow(X)/2)
@@ -58,8 +65,8 @@ plotPredictedGender <- function(cnQuantiles,cutoff =(-0.3),
          col= color, 
          yaxt="n", 
          xlab="median CN(Y)  - median CN(X)", 
-         ylab="", bty=bty
-         )            
+         ylab="",
+         bty=bty)
     abline(v=as.numeric(cutoff),lty=3,lwd=2)
     
     
@@ -75,17 +82,21 @@ plotPredictedGender <- function(cnQuantiles,cutoff =(-0.3),
     
 }
 
-plotDiscrepancyGenders <- function(cutoff = (-0.3), covariates,
-                                   cnQuantiles, bty="o"){
-    predictedGender <- returnPredictedGender(cutoff = cutoff,
-                                             cnQuantiles = cnQuantiles)
+plotDiscrepancyGenders <- function(cutoff = (-0.3),
+                                   covariates,
+                                   cnQuantiles,
+                                   bty="o"
+){
+    predictedGender <- returnPredictedGender(cutoff=cutoff,
+                                             cnQuantiles=cnQuantiles)
     givenGender     <- returnGivenGender(covariates)
     ## In the case a gender information was not provided:
     if (is.null(givenGender)){
         plotPredictedGender(cnQuantiles = cnQuantiles, 
                             cutoff = cutoff, 
                             color = NULL,
-                            legend = TRUE, bty = bty)
+                            legend = TRUE,
+                            bty = bty)
     } else {
     ## In the case a gender information WAS provided:
         X <- cnQuantiles$X

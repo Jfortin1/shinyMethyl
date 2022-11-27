@@ -1,29 +1,40 @@
 #### Created by Jean-Philippe Fortin
 #### March 28, 2014
 
-server.shinyMethyl <- function(shinyMethylSet1, shinyMethylSet2=NULL){
+
+#' @importFrom RColorBrewer brewer.pal
+#' @importFrom grDevices palette
+#' @importFrom utils write.csv
+#' @importFrom stats complete.cases lm
+#' @importFrom graphics par
+#' @importFrom shiny renderPlot renderPrint downloadHandler
+#' @importFrom shiny reactive runApp headerPanel
+server.shinyMethyl <- function(shinyMethylSet1,
+                               shinyMethylSet2=NULL
+){
     function(input, output, session) { 
-        betaQuantiles   <-  getBeta(shinyMethylSet1)
-        mQuantiles      <-  getM(shinyMethylSet1)
-        methQuantiles   <-  getMeth(shinyMethylSet1)
-        unmethQuantiles <-  getUnmeth(shinyMethylSet1)
-        cnQuantiles     <-  getCN(shinyMethylSet1)
-        greenControls   <-  getGreenControls(shinyMethylSet1)
-        redControls     <-  getRedControls(shinyMethylSet1)
+        betaQuantiles   <- getBeta(shinyMethylSet1)
+        mQuantiles      <- getM(shinyMethylSet1)
+        methQuantiles   <- getMeth(shinyMethylSet1)
+        unmethQuantiles <- getUnmeth(shinyMethylSet1)
+        cnQuantiles     <- getCN(shinyMethylSet1)
+        greenControls   <- getGreenControls(shinyMethylSet1)
+        redControls     <- getRedControls(shinyMethylSet1)
         covariates      <<- pData(shinyMethylSet1)
-        pca             <-  getPCA(shinyMethylSet1)$scores
-        sampleNames     <-  sampleNames(shinyMethylSet1)
-        slideNames      <-  substr(sampleNames,1,10)
-        arrayNames      <-  substr(sampleNames,12,17)
-        plateNames      <-  substr(sampleNames,1,6)
-        controlNames    <-  names(greenControls)
+        pca             <- getPCA(shinyMethylSet1)$scores
+        sampleNames     <- sampleNames(shinyMethylSet1)
+        slideNames      <- substr(sampleNames,1,10)
+        arrayNames      <- substr(sampleNames,12,17)
+        plateNames      <- substr(sampleNames,1,6)
+        controlNames    <- names(greenControls)
         
         method <- shinyMethylSet1@originObject
         
         
         ## In the case covariates is empty:
         if (ncol(covariates)==0){
-            covariates <- data.frame(slide = slideNames, plate = plateNames)
+            covariates <- data.frame(slide=slideNames,
+                                     plate=plateNames)
             rownames(covariates) <- sampleNames
             covariates <<- covariates
         }
@@ -50,11 +61,11 @@ server.shinyMethyl <- function(shinyMethylSet1, shinyMethylSet2=NULL){
         
         
                                         # To change the global color scheme:
-	setColor <- reactive({
-            colorSet <<- input$colorChoice
-	})
+    setColor <- reactive({
+        colorSet <<- input$colorChoice
+    })
         
-	set.palette <- function(n, name){
+    set.palette <- function(n, name){
             ## The name of the colors are part of the RColorBrewer package
             if (name != "Pault" & name != "Rainbow"){
                 palette(brewer.pal(n = n, name = name ))
@@ -72,19 +83,19 @@ server.shinyMethyl <- function(shinyMethylSet1, shinyMethylSet2=NULL){
                             "#D8AF3D","#E77C30","#D92120")
                 palette(colors)
             }
-	}
+    }
         ## To choose the colors according to the phenotype:
-	sampleColors <- reactive({
+    sampleColors <- reactive({
             return(as.numeric(as.factor(covariates[,match(input$phenotype,
                                                           colnames(covariates))])))
-	})
+    })
 
 #########################################################
 ###########        Computation of the densities
 #########################################################
 
-	## Return x and y matrices of the densities for raw data
-	returnDensityMatrix <- reactive({
+    ## Return x and y matrices of the densities for raw data
+    returnDensityMatrix <- reactive({
             index <- match(input$probeType,c("I Green","I Red","II","X","Y"))
             if (input$mOrBeta=="Beta-value"){
                 bw <- input$bandwidth 
@@ -101,10 +112,10 @@ server.shinyMethyl <- function(shinyMethylSet1, shinyMethylSet2=NULL){
             matrix.x <- matrix[1:512,]
             matrix.y <- matrix[513:(2*512),]
             return(list(matrix.x = matrix.x, matrix.y = matrix.y))
-	})
+    })
         
     ## Return x and y matrices of the densities for normalized data
-	returnDensityMatrixNorm <- reactive({
+    returnDensityMatrixNorm <- reactive({
             if (is.null(shinyMethylSet2)){
                 return(NULL)
             } else {
@@ -124,15 +135,16 @@ server.shinyMethyl <- function(shinyMethylSet1, shinyMethylSet2=NULL){
             })
             matrix.x <- matrix[1:512,]
             matrix.y <- matrix[513:(2*512),]
-            return(list(matrix.x = matrix.x, matrix.y = matrix.y))	
-	})
+            return(list(matrix.x = matrix.x, matrix.y = matrix.y))  
+    })
 
 #########################################################
 ###########         Mouse clicks section
 #########################################################
 
     ## Check if the selected sample is already in the list or not:
-	check.mouse.clicks <- function(clickedIndex, mouse.click.indices){
+    check.mouse.clicks <- function(clickedIndex,
+                                   mouse.click.indices){
            
             if (length(mouse.click.indices)!=0){
                 if (clickedIndex %in% mouse.click.indices){
@@ -145,10 +157,10 @@ server.shinyMethyl <- function(shinyMethylSet1, shinyMethylSet2=NULL){
             }
 
             return(mouse.click.indices)
-	}
+    }
     
     ## To update the list of mouse clicks from internal controls plot:
-	updateMouseClicks <- reactive({
+    updateMouseClicks <- reactive({
             
         mouse.x <- input$controlsHover$x
         mouse.y <- input$controlsHover$y
@@ -167,16 +179,16 @@ server.shinyMethyl <- function(shinyMethylSet1, shinyMethylSet2=NULL){
             current.control.type <<- as.character(input$controlType)
         }
         mouse.click.indices
-	})
+    })
     ## To update the list of mouse clicks from quality control plot:
-	updateMouseClicksQC <- reactive({
+    updateMouseClicksQC <- reactive({
         mouse.x <- input$qualityHover$x
         mouse.y <- input$qualityHover$y
         
         if (!is.null(mouse.x) & !is.null(mouse.y)){
             med <- as.integer(nrow(methQuantiles[[3]])/2)
-    	    mediansU <- unlist(unmethQuantiles[[3]][med,])        
-    	    mediansM <- unlist(methQuantiles[[3]][med,]) 
+            mediansU <- unlist(unmethQuantiles[[3]][med,])        
+            mediansM <- unlist(methQuantiles[[3]][med,]) 
                 
             x <- log2(mediansU)
             y <- log2(mediansM)
@@ -193,10 +205,10 @@ server.shinyMethyl <- function(shinyMethylSet1, shinyMethylSet2=NULL){
                                                        mouse.click.indices)
         }
         mouse.click.indices
-	})
+    })
         
     ## To update the list of mouse clicks from densities plot:
-	updateMouseClicksDensities <- reactive({
+    updateMouseClicksDensities <- reactive({
         mouse.x <- input$densitiesHover$x
         mouse.y <- input$densitiesHover$y
         #print(mouse.x)
@@ -238,10 +250,10 @@ server.shinyMethyl <- function(shinyMethylSet1, shinyMethylSet2=NULL){
             }
         }
         mouse.click.indices
-	})
+    })
         
     ## To update the list of mouse clicks from normalized densities plot:
-	updateMouseClicksDensitiesNorm <- reactive({
+    updateMouseClicksDensitiesNorm <- reactive({
         mouse.x <- input$normHover$x
         mouse.y <- input$normHover$y
         
@@ -276,19 +288,19 @@ server.shinyMethyl <- function(shinyMethylSet1, shinyMethylSet2=NULL){
             }
         }
         mouse.click.indices
-	})
+    })
         
     ## To update the list from all plots:
-	reactive.mouse.click.indices <- reactive({
+    reactive.mouse.click.indices <- reactive({
             updateMouseClicks()
             updateMouseClicksQC()
             updateMouseClicksDensities()
             updateMouseClicksDensitiesNorm()
             return(mouse.click.indices)
-	})
+    })
         
     ## Print the list of selected samples:
-	output$cumulativeListPrint <- renderPrint({
+    output$cumulativeListPrint <- renderPrint({
             names <- names(reactive.mouse.click.indices())
             n <- length(names)
             if (n >=1){
@@ -297,16 +309,16 @@ server.shinyMethyl <- function(shinyMethylSet1, shinyMethylSet2=NULL){
                     cat(paste0(names[ii], "\n"))
                 }
             }
-	})
-	
-	
-	cumulativeList <- reactive({
+    })
+    
+    
+    cumulativeList <- reactive({
             names <- names(reactive.mouse.click.indices())
             return(names)
-	})
-	
+    })
+    
         ## To write the selected samples into a csv file:
-	output$selectedSamples <- downloadHandler(
+    output$selectedSamples <- downloadHandler(
             
             filename <- "selectedSamples.csv",
             content <- function(con){
@@ -379,10 +391,10 @@ server.shinyMethyl <- function(shinyMethylSet1, shinyMethylSet2=NULL){
             
             ## To draw the lines:              
             if (input$mOrBeta=="Beta-value"){
-        	abline(v=0,lty=3,lwd=3)
+            abline(v=0,lty=3,lwd=3)
                 abline(v=1,lty=3,lwd=3)
             } else {
-        	abline(v=0,lty=3,lwd=3)
+            abline(v=0,lty=3,lwd=3)
             }         
         })
                 
@@ -391,7 +403,7 @@ server.shinyMethyl <- function(shinyMethylSet1, shinyMethylSet2=NULL){
         output$normDensities <- renderPlot({
             if (is.null(shinyMethylSet2)){
                 return(NULL)
-            }	else {
+            }   else {
                 
                 set.palette(n=8, name=setColor())
                 colors <- sampleColors()
@@ -413,7 +425,7 @@ server.shinyMethyl <- function(shinyMethylSet1, shinyMethylSet2=NULL){
                     xlab = "Beta-values"
                     bw <- input$bandwidth
                     quantiles =  shinyMethylSet2@betaQuantiles[[index]]
-		} else {
+        } else {
                     xlim <- c(-8,8)
                     ylim <- c(0, 0.35)
                     from = -10; to = 10;
@@ -421,9 +433,9 @@ server.shinyMethyl <- function(shinyMethylSet1, shinyMethylSet2=NULL){
                     xlab = "M-values"
                     quantiles =  shinyMethylSet2@mQuantiles[[index]]
                     bw <- input$bandwidth2
-		}
+        }
                 
-		densitiesPlot(matrix.x = returnDensityMatrixNorm()[[1]],
+        densitiesPlot(matrix.x = returnDensityMatrixNorm()[[1]],
                               matrix.y = returnDensityMatrixNorm()[[2]],
                               quantiles = quantiles,
                               sampleNames = sampleNames,
@@ -505,13 +517,13 @@ server.shinyMethyl <- function(shinyMethylSet1, shinyMethylSet2=NULL){
 #########################################################
 
 
-	## To change the gender cutoff for prediction:
-	setGenderCutoff <- reactive({
+    ## To change the gender cutoff for prediction:
+    setGenderCutoff <- reactive({
             if (!is.null(input$genderCutoff)){
                 genderCutoff <<- input$genderCutoff$x
             }
-	})
-	output$diffPrint <- renderPrint({
+    })
+    output$diffPrint <- renderPrint({
             if (ncol(data())!=3){
                 cat("No gender was provided in the phenotype data")
             } else {
@@ -526,7 +538,7 @@ server.shinyMethyl <- function(shinyMethylSet1, shinyMethylSet2=NULL){
                     cat("The provided gender agrees with the predicted gender for all samples")
                 }
             }
-	})
+    })
         
         
         
@@ -578,26 +590,26 @@ server.shinyMethyl <- function(shinyMethylSet1, shinyMethylSet2=NULL){
             non.matching.samples <- c()
             diffs <- data()
             if (ncol(diffs)==3){
- 		non.matching.samples <- shinyMethylSet1@sampleNames[diffs$agree=="NO"]
- 		non.matching.samples <- non.matching.samples[complete.cases(non.matching.samples)]
+        non.matching.samples <- shinyMethylSet1@sampleNames[diffs$agree=="NO"]
+        non.matching.samples <- non.matching.samples[complete.cases(non.matching.samples)]
             }
             return(non.matching.samples)
             
         })
         output$diffPrint <- renderPrint({
             if (ncol(data())!=3){
-		cat("No gender was provided in the phenotype data")
+        cat("No gender was provided in the phenotype data")
             } else {
-		diff.genders <- diffGenders()
-		diff.genders <- diff.genders[!is.na(diff.genders)]
-		if (!is.null(diffGenders())){
+        diff.genders <- diffGenders()
+        diff.genders <- diff.genders[!is.na(diff.genders)]
+        if (!is.null(diffGenders())){
                     n <- length(diffGenders())
                     for (i in 1:n){
                         cat(paste0(diffGenders()[i]),"\n")
                     }
-		} else {
+        } else {
                     cat("The provided gender agrees with the predicted gender for all samples")
-		}
+        }
             }
         })
         
@@ -643,7 +655,7 @@ server.shinyMethyl <- function(shinyMethylSet1, shinyMethylSet2=NULL){
                           to =4)
             
             abline(v=0,lty=3,lwd=3)
-	    abline(v=1,lty=3,lwd=3)
+        abline(v=1,lty=3,lwd=3)
             
         })
         
@@ -670,10 +682,10 @@ server.shinyMethyl <- function(shinyMethylSet1, shinyMethylSet2=NULL){
         ## Print the summary of the PCA regression: 
         output$modelPrint <- renderPrint({
             if (method!="Merging"){
-		y <- shinyMethylSet1@pca$scores[,as.numeric(input$pcToExplore)]
+        y <- shinyMethylSet1@pca$scores[,as.numeric(input$pcToExplore)]
                 cov <- covariates[match(rownames(shinyMethylSet1@pca$scores),
                                         rownames(covariates)),]
-		x <- (as.factor(cov[,match(input$covToRegress,colnames(cov))]))
+        x <- (as.factor(cov[,match(input$covToRegress,colnames(cov))]))
                 model <- lm(y~ x)
                 return(summary(model))
             }
@@ -736,9 +748,9 @@ server.shinyMethyl <- function(shinyMethylSet1, shinyMethylSet2=NULL){
             ## Plot specifications                  
             xlim <- c(-0.2,1.2)
             if (input$probeType == "II"){
-   		ylim <- c(0,6)
+        ylim <- c(0,6)
             } else {
-   		ylim <- c(0,10)
+        ylim <- c(0,10)
             }
             from = -4; to = 4;
             main = "Probe Type Differences - Raw Data"
@@ -771,7 +783,7 @@ server.shinyMethyl <- function(shinyMethylSet1, shinyMethylSet2=NULL){
             
             if (is.null(shinyMethylSet2)){
                 return(NULL)
-            }	else {
+            }   else {
                 
                 set.palette(n=8, name=setColor())
                 colors <- sampleColors()
