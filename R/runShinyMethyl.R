@@ -17,7 +17,7 @@
 #' 
 #' @examples 
 #' \dontrun{
-#' if (require(minfiData)){
+#' if (interactive()){
 #' library(minfi)
 #' baseDir <- system.file("extdata", package = "minfiData")
 #' targets <- read.metharray.sheet(baseDir)

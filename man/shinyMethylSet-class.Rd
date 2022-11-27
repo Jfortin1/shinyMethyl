@@ -117,7 +117,7 @@ arguments outlined above.
   }
 }
 
-\author{Jean-Philippe Fortin \email{jfortin@jhsph.edu}}
+\author{Jean-Philippe Fortin}
 
 \seealso{
   Objects of this class are typically created by using the function

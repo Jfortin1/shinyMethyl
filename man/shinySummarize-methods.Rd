@@ -24,7 +24,7 @@
   Either a \code{RGChannelSet} is transformed into a \code{shinyMethylSet}, or a \code{GenomicRatioSet} is transformed to a \code{shinyMethylSet}
 }
 
-\author{Jean-Philippe Fortin \email{jfortin@jhsph.edu}}
+\author{Jean-Philippe Fortin}
 
 \seealso{
   \code{\link{shinyMethylSet}} for the output object and
