@@ -2,7 +2,7 @@ Package: shinyMethyl
 Title: Interactive visualization for Illumina methylation arrays
 Description: Interactive tool for visualizing Illumina methylation array data.
     Both the 450k and EPIC array are supported. 
-Version: 1.35.1
+Version: 1.35.2
 Authors@R: c(
     person("Jean-Philippe", "Fortin", role = c("cre", "aut"), email = "fortin946@gmail.com"),
     person(c("Kasper", "Daniel"), "Hansen", role = "aut"))
@@ -13,6 +13,7 @@ Imports:
     grDevices,
     htmltools,
     MatrixGenerics,
+    methods,
     minfi,
     RColorBrewer,
     shiny,
@@ -28,6 +29,7 @@ URL: https://github.com/Jfortin1/shinyMethyl
 BugReports: https://github.com/Jfortin1/shinyMethyl
 VignetteBuilder: knitr
 License: Artistic-2.0
+Encoding: UTF-8
 biocViews:
     DNAMethylation,
     Microarray,

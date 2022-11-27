@@ -41,12 +41,19 @@ server.shinyMethyl <- function(shinyMethylSet1,
         
         ## Global variables:
         ## that will be accessed by the knitr report
+        mouse.click.indices <- c()
         mouse.click.indices <<- c()
+        colorSet     <- "Set1" # Default color set
         colorSet     <<- "Set1" # Default color set
+        sampleColors <- as.numeric(as.factor(plateNames)) ## Default sample colors
         sampleColors <<- as.numeric(as.factor(plateNames)) ## Default sample colors
+        genderCutoff <- -0.4 # Default cutoff for gender prediction
         genderCutoff <<- -0.4 # Default cutoff for gender prediction
+        current.control.type <- "BISULFITE CONVERSION I"
         current.control.type <<- "BISULFITE CONVERSION I"
+        current.probe.type   <- "I Green"
         current.probe.type   <<- "I Green"
+        current.density.type <- "M-value"
         current.density.type <<- "M-value"
         
         
