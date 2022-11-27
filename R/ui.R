@@ -23,6 +23,7 @@ ui.shinyMethyl <- function(shinyMethylSet1, shinyMethylSet2=NULL){
     controlNames    <- names(greenControls)
     slides <- unique(slideNames)
     method <- shinyMethylSet1@originObject
+    sampleColors <- as.numeric(as.factor(plateNames))
     sampleColors <<- as.numeric(as.factor(plateNames))
     
     ## In the case covariates is empty:
