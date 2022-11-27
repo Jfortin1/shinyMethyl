@@ -1,7 +1,11 @@
 shinyMethyl
 ===========
 
-[![Build Status](https://travis-ci.org/Jfortin1/shinyMethyl.svg?branch=master)](https://travis-ci.org/Jfortin1/shinyMethyl)
+|Package|BioC-release|BioC-devel
+|---|---|---|
+|[shinyMethyl](https://github.com/Jfortin1/shinyMethyl)|[![Release OK](https://bioconductor.org/shields/build/release/bioc/shinyMethyl.svg)](http://bioconductor.org/checkResults/release/bioc-LATEST/shinyMethyl/)|[![Devel OK](https://bioconductor.org/shields/build/devel/bioc/shinyMethyl.svg)](http://bioconductor.org/checkResults/devel/bioc-LATEST/shinyMethyl/)
+|[shinyMethylData](https://github.com/Jfortin1/shinyMethylData)|[![Release OK](https://bioconductor.org/shields/build/release/data-experiment/shinyMethylData.svg)](http://bioconductor.org/checkResults/release/data-experiment-LATEST/shinyMethylData/)|[![Devel OK](https://bioconductor.org/shields/build/devel/data-experiment/shinyMethylData.svg)](http://bioconductor.org/checkResults/devel/data-experiment-LATEST/shinyMethylData/)
+
 
 Authors: [Jean-Philippe Fortin](mailto:fortin946@gmail.com) and [Kasper Daniel Hansen](mailto:khansen@jhsph.edu)
 
