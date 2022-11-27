@@ -22,16 +22,15 @@ Function to run the interactive shinyMethyl session
     from a shinyMethylSet object.
 }
 \examples{
-\dontrun{
 if (interactive()){
 library(minfi)
+library(minfiData)
 baseDir <- system.file("extdata", package = "minfiData")
 targets <- read.metharray.sheet(baseDir)
 targets$Sample_Plate <- substr(targets$Slide,1,7)
 RGSet <- read.metharray.exp(targets=targets)
 summarized.data <- shinySummarize(RGSet)
 runShinyMethyl(summarized.data)
-}
 }
 }
 \seealso{
