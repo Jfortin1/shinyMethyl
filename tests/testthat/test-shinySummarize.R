@@ -24,8 +24,13 @@ test_that("shinySummarize function", {
                       pca=pca)
     currentDigests <- lapply(all.matrices, minfi:::.digestMatrix)
 
-    for (i in 1:length(currentDigests)){
-        file <- file.path("objects",names(currentDigests)[i])
-        expect_equal_to_reference(currentDigests[[i]],file=file)
+    for (i in seq_along(currentDigests)){
+        name <- paste0(names(currentDigests)[i], ".rds")
+        name <- gsub(" ", "_", name)
+        file <- file.path("objects", name)
+        expect_equal_to_reference(currentDigests[[i]],
+                                  file=file)
     }
 })
+
+
