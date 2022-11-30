@@ -13,15 +13,13 @@ test_that("shinySummarize function", {
     cn <- getCN(shinyMethylSet)
     green <- getGreenControls(shinyMethylSet)
     red <- getRedControls(shinyMethylSet)
-    pca <- shinyMethylSet@pca
     all.matrices <- c(beta=beta,
                       m=m,
                       meth=meth,
                       unmeth=unmeth,
                       cn=cn,
                       green=green,
-                      red=red,
-                      pca=pca)
+                      red=red)
     currentDigests <- lapply(all.matrices, minfi:::.digestMatrix)
 
     for (i in seq_along(currentDigests)){
