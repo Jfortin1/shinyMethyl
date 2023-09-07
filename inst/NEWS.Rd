@@ -20,3 +20,9 @@
     \item Now handles EPIC arrays. 
   }
 }
+
+\section{Version 1.37.2}{
+  \itemize{
+    \item Removing failing test
+  }
+}
