@@ -2,7 +2,7 @@ Package: shinyMethyl
 Title: Interactive visualization for Illumina methylation arrays
 Description: Interactive tool for visualizing Illumina methylation array data.
     Both the 450k and EPIC array are supported. 
-Version: 1.37.2
+Version: 1.37.3
 Authors@R: c(
     person("Jean-Philippe", "Fortin", role = c("cre", "aut"), email = "fortin946@gmail.com"),
     person(c("Kasper", "Daniel"), "Hansen", role = "aut"))
@@ -38,4 +38,3 @@ biocViews:
     QualityControl,
     MethylationArray
 RoxygenNote: 7.2.1
-PackageStatus: Deprecated
