@@ -38,4 +38,3 @@ biocViews:
     QualityControl,
     MethylationArray
 RoxygenNote: 7.2.1
-PackageStatus: Deprecated

@@ -189,13 +189,14 @@ orderByName <- function(object){
     for (i in 1:length(object@mQuantiles)){
         object@mQuantiles[[i]] <- object@mQuantiles[[i]][,o]
     }
-    for (i in 1:length(object@methQuantiles)){
+
+    for (i in seq_len(length(object@methQuantiles))){
         object@methQuantiles[[i]] <- object@methQuantiles[[i]][,o]
     }
-    for (i in 1:length(object@unmethQuantiles)){
+    for (i in seq_len(length(object@unmethQuantiles))){
         object@unmethQuantiles[[i]] <- object@unmethQuantiles[[i]][,o]
     }
-    for (i in 1:length(object@cnQuantiles)){
+    for (i in seq_len(length(object@cnQuantiles))){
         object@cnQuantiles[[i]] <- object@cnQuantiles[[i]][,o]
     }
     
@@ -205,7 +206,7 @@ orderByName <- function(object){
     
     object@phenotype <- object@phenotype[o,]
     
-    for (i in 1:length(object@greenControls)){
+    for (i in seq_len(length(object@greenControls))){
         object@greenControls[[i]] <- object@greenControls[[i]][,o]
         object@redControls[[i]]   <- object@redControls[[i]][,o]
     }

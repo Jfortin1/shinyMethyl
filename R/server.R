@@ -13,6 +13,7 @@ server.shinyMethyl <- function(shinyMethylSet1,
                                shinyMethylSet2=NULL
 ){
     function(input, output, session) { 
+        
         betaQuantiles   <- getBeta(shinyMethylSet1)
         mQuantiles      <- getM(shinyMethylSet1)
         methQuantiles   <- getMeth(shinyMethylSet1)
@@ -29,7 +30,7 @@ server.shinyMethyl <- function(shinyMethylSet1,
         controlNames    <- names(greenControls)
         
         method <- shinyMethylSet1@originObject
-        
+
         
         ## In the case covariates is empty:
         if (ncol(covariates)==0){

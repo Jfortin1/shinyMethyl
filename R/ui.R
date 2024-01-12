@@ -7,6 +7,7 @@
 #' @importFrom shiny downloadLink verbatimTextOutput
 #' @importFrom htmltools div HTML
 ui.shinyMethyl <- function(shinyMethylSet1, shinyMethylSet2=NULL){
+    
     betaQuantiles   <- getBeta(shinyMethylSet1)
     mQuantiles      <- getM(shinyMethylSet1)
     methQuantiles   <- getMeth(shinyMethylSet1)

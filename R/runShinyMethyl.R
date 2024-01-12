@@ -36,7 +36,7 @@ runShinyMethyl <- function(shinyMethylSet1,
     }
 
     shinyMethylSet1 <- shinyMethyl::orderByName(shinyMethylSet1)
-    
+    shinyMethylSet2 <- shinyMethyl::orderByName(shinyMethylSet2)
     # If a second shinyMethylSet is provided (from GenomicRatioSet):
     if (!is.null(shinyMethylSet2)) {
         if (shinyMethylSet2@originObject != "GenomicRatioSet") {
@@ -49,12 +49,12 @@ runShinyMethyl <- function(shinyMethylSet1,
                  " Both shinyMethylSet objects must be created from ",
                  "the same samples.")
         }
-        shinyMethylSet2 <- shinyMethyl::orderByName(shinyMethylSet2)
     } 
-
+    
     ui <- ui.shinyMethyl(shinyMethylSet1, shinyMethylSet2)
     server <- server.shinyMethyl(shinyMethylSet1, shinyMethylSet2)
     shinyMethyl.app <- list(ui=ui, server=server)
+
     runApp(shinyMethyl.app)
 }
 
